@@ -221,7 +221,7 @@
 
 								<div class="card-body">
 									<label>Sent Time :</label>
-									<input value="{{$transaction->sent_time}}" type="time" class=" form-control" name="sent_time" style="border:{{ $errors->has('sent_time') ? '1px solid #fc6a55' : ''}}">
+									<input value="{{$transaction->sent_time}}" type="time" class=" form-control" step="1"  name="sent_time" style="border:{{ $errors->has('sent_time') ? '1px solid #fc6a55' : ''}}">
 									 @if($errors->has('sent_time'))
                           <p class="help-block" style="color: #fc6a55">
                               {{ $errors->first('sent_time') }}
@@ -232,7 +232,7 @@
 
 								<div class="card-body">
 									<label>Reply time :</label>
-									<input value="{{$transaction->reply_time}}" type="time" class=" form-control"  name="reply_time" style="border:{{ $errors->has('reply_time') ? '1px solid #fc6a55' : ''}}">
+									<input value="{{$transaction->reply_time}}" type="time" class=" form-control" step="1"  name="reply_time" style="border:{{ $errors->has('reply_time') ? '1px solid #fc6a55' : ''}}">
 									 @if($errors->has('reply_time'))
                           <p class="help-block" style="color: #fc6a55">
                               {{ $errors->first('reply_time') }}

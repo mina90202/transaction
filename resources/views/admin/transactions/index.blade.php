@@ -1,5 +1,5 @@
 @extends('admin-layout.master')
-@section('title', 'Transaction ')
+@section('title', 'Transaction Log ')
 @section('content')
 
 	<div class="card">
