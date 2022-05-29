@@ -59,7 +59,7 @@
 						<div class="row mb-2 mb-xl-3">
 							
 							<div class="col-4 d-none d-sm-block">
-								<h3><strong>Search Results for '{{$search}}' </strong></h3>
+								<h3><strong>{{$trans->count()}} records found for'{{$search}}' </strong></h3>
 							</div>
 
 							<div class="col-2 d-none d-sm-block"></div>
@@ -136,7 +136,7 @@
 
 								</div>
 							</div>
-  {{ $trans->links() }}
+ 
 							 </div>
 
 
