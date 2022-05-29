@@ -33,16 +33,19 @@ class TransactionController extends Controller
                              ->toDateTimeString();
        $trans =  Transaction::whereBetween('created_at',[$start_date,$end_date])->where('s_b', $request->filter)->orderBy('created_at', 'desc')->paginate(20);
 
+       }elseif($request->filter == 'Buyer') {
+
+                $start_date = \Carbon\Carbon::parse($request->date_from)
+                                 ->toDateTimeString();
+
+           $end_date = \Carbon\Carbon::parse($request->date_to)
+                                 ->toDateTimeString();
+
+           $trans =  Transaction::whereBetween('created_at',[$start_date,$end_date])->where('s_b', $request->filter)->orderBy('created_at', 'desc')->paginate(20);
+
        }else {
 
-            $start_date = \Carbon\Carbon::parse($request->date_from)
-                             ->toDateTimeString();
-
-       $end_date = \Carbon\Carbon::parse($request->date_to)
-                             ->toDateTimeString();
-
-       $trans =  Transaction::where('created_at',[$start_date,$end_date])->where('s_b', $request->filter)->orderBy('created_at', 'desc')->paginate(20);
-
+        $tras = 'No Data !' ;
        }
 
 
@@ -52,15 +55,16 @@ class TransactionController extends Controller
        if ($count > 0) {
                   $avg = $trans->sum('avgtime') / $trans->count();
        }else{
-        $avg = 1;
+        $avg = 0;
        }
        $total_hitted = $trans->where('rule_hitted', '!=', null)->count();
        $total_amount_hitted = $trans->where('rule_hitted', '!=', null)->sum('amount');
        $total_clear = $trans->where('rule_hitted', '=', null)->count();
        $total_amount_clear = $trans->where('rule_hitted', '=', null)->sum('amount');
+       $search_date = $request->date_from . " to "  . $request->date_to;
 
 
-         return view('admin.search.getmonthly', compact('trans', 'count', 'sum', 'avg', 'total_hitted', 'total_amount_hitted', 'total_clear', 'total_amount_clear'));
+         return view('admin.search.getmonthly', compact('trans', 'count', 'sum', 'avg', 'total_hitted', 'total_amount_hitted', 'total_clear', 'total_amount_clear', 'search_date'));
     }
 
 
@@ -71,14 +75,14 @@ $search = $request->record;
 
 if ($request->filter == 'cs_no') {
     
-    $trans = transaction::query()->where('customer_no', 'LIKE', "%{$search}%")->orderBy('created_at', 'desc')->paginate(20);
+    $trans = transaction::query()->where('customer_no', 'LIKE', "%{$search}%")->orderBy('created_at', 'desc')->get();
 
 }elseif ($request->filter == 's_code') {
     
-    $trans = transaction::query()->where('s_b_code', 'LIKE', "%{$search}%")->where('s_b' , 'Supplier')->orderBy('created_at', 'desc')->paginate(20);
+    $trans = transaction::query()->where('s_b_code', 'LIKE', "%{$search}%")->where('s_b' , 'Supplier')->orderBy('created_at', 'desc')->get();
 }elseif ($request->filter == 'b_code') {
     
-    $trans = transaction::query()->where('s_b_code', 'LIKE', "%{$search}%")->where('s_b' , 'Buyer')->orderBy('created_at', 'desc')->paginate(20);
+    $trans = transaction::query()->where('s_b_code', 'LIKE', "%{$search}%")->where('s_b' , 'Buyer')->orderBy('created_at', 'desc')->get();
 
 }else {
     $trans = 'no data founds';
@@ -255,8 +259,8 @@ return redirect()->route('transactions.index')->with('record',  'Record added Su
         $transaction->amount = $request->amount;
         $transaction->sent_time = $request->sent_time;
         $transaction->reply_time = $request->reply_time;
-        $to = \Carbon\Carbon::createFromFormat('H:s', $request->sent_time);
-        $from = \Carbon\Carbon::createFromFormat('H:s', $request->reply_time);
+        $to = \Carbon\Carbon::createFromFormat('H:s:i', $request->sent_time);
+        $from = \Carbon\Carbon::createFromFormat('H:s:i', $request->reply_time);
         $transaction->avgtime = $to->diffInMinutes($from);
 
 
