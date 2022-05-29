@@ -30,27 +30,9 @@ class HomeController extends Controller
  
    $transactions = Transaction::orderBy('created_at', 'desc')->paginate(20);
 
-      // $recordone = BranchSide::select('record')->where('date', '2022-02-22')->sum('record');
-      // $recordtwo = CenterSide::select('record')->where('date', '2022-02-22')->sum('record');
-
-      // $end = $recordone - $recordtwo;
-
 
         return view('admin.home', compact('transactions'));
     }
-
-
-    // public function checkResult() {
-
-    //   $branchside = BranchSide::select('record')->where('date', '2022-02-22')->sum('record');
-    //   $centerside = CenterSide::select('record')->where('date', '2022-02-22')->sum('record');
-
-
-    //   return $branchside - $centerside;
-
-
-    // }
-
 
   
 }
